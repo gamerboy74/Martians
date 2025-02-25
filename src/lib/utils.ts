@@ -1,15 +1,20 @@
-import { type ClassValue, clsx } from 'clsx';
-import { twMerge } from 'tailwind-merge';
+import { type ClassValue, clsx } from "clsx";
+import { twMerge } from "tailwind-merge";
 
 // Improved image optimization with better caching and size handling
-export function getOptimizedImageUrl(url: string, width: number, height: number, quality: number = 80): string {
+export function getOptimizedImageUrl(
+  url: string,
+  width: number,
+  height: number,
+  quality: number = 80
+): string {
   if (!url) return url;
-  
+
   // Handle Unsplash images
-  if (url.includes('unsplash.com')) {
+  if (url.includes("unsplash.com")) {
     return `${url}?w=${width}&h=${height}&q=${quality}&fit=crop&auto=format`;
   }
-  
+
   // Handle other image services here if needed
   return url;
 }
@@ -42,17 +47,24 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-// Format date with memoization
+// Format date with memoization, updated to IST
 const dateFormatters: { [key: string]: Intl.DateTimeFormat } = {};
 
-export function formatDate(date: string | Date, format: 'short' | 'long' = 'long'): string {
-  const key = `${format}-${navigator.language}`;
-  
+export function formatDate(
+  date: string | Date,
+  format: "short" | "long" = "long"
+): string {
+  const key = `${format}-IST`; // Use IST-specific key
+
   if (!dateFormatters[key]) {
-    dateFormatters[key] = new Intl.DateTimeFormat(navigator.language, {
-      year: 'numeric',
-      month: format === 'long' ? 'long' : 'short',
-      day: 'numeric',
+    dateFormatters[key] = new Intl.DateTimeFormat("en-IN", {
+      year: "numeric",
+      month: format === "long" ? "long" : "short",
+      day: "numeric",
+      hour: "numeric",
+      minute: "2-digit",
+      hour12: true,
+      timeZone: "Asia/Kolkata", // Set to IST (UTC+5:30)
     });
   }
 
@@ -62,30 +74,31 @@ export function formatDate(date: string | Date, format: 'short' | 'long' = 'long
 // Improved error handling
 export function getErrorMessage(error: unknown): string {
   if (error instanceof Error) return error.message;
-  if (typeof error === 'string') return error;
-  return 'An unknown error occurred';
+  if (typeof error === "string") return error;
+  return "An unknown error occurred";
 }
 
 // Performance monitoring utility
 export const performance = {
   mark(name: string) {
-    if (process.env.NODE_ENV === 'development') {
+    if (process.env.NODE_ENV === "development") {
       window.performance.mark(name);
     }
   },
   measure(name: string, startMark: string, endMark: string) {
-    if (process.env.NODE_ENV === 'development') {
+    if (process.env.NODE_ENV === "development") {
       try {
         window.performance.measure(name, startMark, endMark);
-        console.log(`Performance '${name}':`, 
-          window.performance.getEntriesByName(name)[0].duration.toFixed(2), 
-          'ms'
+        console.log(
+          `Performance '${name}':`,
+          window.performance.getEntriesByName(name)[0].duration.toFixed(2),
+          "ms"
         );
       } catch (e) {
-        console.warn('Performance measurement failed:', e);
+        console.warn("Performance measurement failed:", e);
       }
     }
-  }
+  },
 };
 
 // Cache management with TTL and size limits
@@ -95,14 +108,15 @@ export const cache = {
 
   set(key: string, data: any, ttl: number = 3600000) {
     if (this.store.size >= this.maxSize) {
-      const oldestKey = Array.from(this.store.entries())
-        .sort(([, a], [, b]) => a.expiry - b.expiry)[0][0];
+      const oldestKey = Array.from(this.store.entries()).sort(
+        ([, a], [, b]) => a.expiry - b.expiry
+      )[0][0];
       this.store.delete(oldestKey);
     }
 
     this.store.set(key, {
       data,
-      expiry: Date.now() + ttl
+      expiry: Date.now() + ttl,
     });
   },
 
@@ -124,7 +138,7 @@ export const cache = {
 
   clear() {
     this.store.clear();
-  }
+  },
 };
 
 // Intersection Observer hook with cleanup
@@ -134,9 +148,9 @@ export function createIntersectionObserver(
 ): IntersectionObserver {
   return new IntersectionObserver(callback, {
     root: null,
-    rootMargin: '0px',
+    rootMargin: "0px",
     threshold: 0,
-    ...options
+    ...options,
   });
 }
 
@@ -168,8 +182,9 @@ export function memoize<T extends (...args: any[]) => any>(
     }
 
     if (cache.size >= maxSize) {
-      const oldestKey = Array.from(cache.entries())
-        .sort(([, a], [, b]) => a.expiry - b.expiry)[0][0];
+      const oldestKey = Array.from(cache.entries()).sort(
+        ([, a], [, b]) => a.expiry - b.expiry
+      )[0][0];
       cache.delete(oldestKey);
     }
 

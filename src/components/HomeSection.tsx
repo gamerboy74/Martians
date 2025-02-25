@@ -85,7 +85,7 @@ const HomeSection: React.FC = () => {
             WELCOME TO
             <br />
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-purple-600">
-              KINGSCON 2024
+              MARTIANS GAMING GUILD
             </span>
           </h1>
           <p className="text-lg md:text-xl text-gray-300 mb-8 md:mb-12 max-w-2xl mx-auto px-4">

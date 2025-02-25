@@ -28,6 +28,7 @@ export interface Tournament {
 }
 
 export interface Match {
+  tournaments: any;
   id: string;
   tournament_id: string;
   round: number;

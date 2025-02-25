@@ -4,7 +4,6 @@ import {
   Trophy,
   Calendar,
   Users,
-  DollarSign,
   ArrowLeft,
   Clock,
   Info,
@@ -13,6 +12,7 @@ import { supabase } from "../lib/supabase";
 import { formatDate } from "../lib/utils";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
+import { FaRupeeSign } from "react-icons/fa";
 
 interface Tournament {
   id: string;
@@ -150,7 +150,7 @@ const TournamentView: React.FC = () => {
           <div className="max-w-7xl mx-auto">
             <Link
               to="/"
-              className="inline-flex items-center gap-2 text-purple-400 hover:text-purple-300 transition-colors mb-8"
+              className="inline-flex items-center gap-2 text-purple-400 hover:text-purple-300 transition-colors mt-10 mb-8"
             >
               <ArrowLeft className="w-5 h-5" />
               <span>Back to Home</span>
@@ -284,7 +284,7 @@ const TournamentView: React.FC = () => {
                     Prize Pool
                   </h2>
                   <div className="flex items-center gap-4 mb-6">
-                    <DollarSign className="w-12 h-12 text-purple-400" />
+                    <FaRupeeSign className="w-12 h-12 text-purple-400" />
                     <span className="text-4xl font-bold text-white">
                       {tournament.prize_pool}
                     </span>

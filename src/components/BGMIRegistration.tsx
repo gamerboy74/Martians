@@ -206,7 +206,7 @@ const BGMIRegistration: React.FC = () => {
                 <label className="block text-sm font-medium text-gray-300">
                   Team Members
                 </label>
-                {[0, 1, 2].map((index) => (
+                {[0, 1, 2, 3].map((index) => (
                   <div key={index} className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <input
                       type="text"
@@ -320,8 +320,6 @@ const BGMIRegistration: React.FC = () => {
                   className="w-full px-4 py-2 bg-black/50 border border-purple-500/30 rounded-lg 
                   text-white focus:outline-none focus:border-purple-500/50"
                 >
-                  <option value="Solo">Solo</option>
-                  <option value="Duo">Duo</option>
                   <option value="Squad">Squad</option>
                 </select>
               </div>
@@ -336,8 +334,6 @@ const BGMIRegistration: React.FC = () => {
                   text-white focus:outline-none focus:border-purple-500/50"
                 >
                   <option value="Battle Royale">Battle Royale</option>
-                  <option value="Team Deathmatch">Team Deathmatch</option>
-                  <option value="Zombie Mode">Zombie Mode</option>
                 </select>
               </div>
             </div>

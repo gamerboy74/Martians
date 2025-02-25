@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Swords, Plus, Search, ArrowUpRight, RefreshCw, Trophy } from 'lucide-react';
+import { Swords, Plus, Search, ArrowUpRight, RefreshCw, Trophy, Trash2, Edit } from 'lucide-react';
 import { Dialog } from '../components/ui/Dialog';
 import { MatchForm } from '../components/ui/MatchForm';
 import { Button } from '../components/ui/Button';
@@ -10,9 +10,136 @@ import { useToast } from '../hooks/useToast';
 import { formatDate } from '../lib/utils';
 import { supabase } from '../lib/supabase';
 
+const EditMatchModal: React.FC<{
+  match: any;
+  onClose: () => void;
+  onUpdate: () => void;
+}> = ({ match, onClose, onUpdate }) => {
+  const [isLoading, setIsLoading] = useState(false);
+  const toast = useToast();
+
+  const handleSubmit = async (data: any) => {
+    try {
+      setIsLoading(true);
+      const updateData = {
+        start_time: data.start_time,
+        stream_url: data.stream_url,
+        status: data.status,
+        team1_score: data.team1_score,
+        team2_score: data.team2_score,
+      };
+
+      const { error } = await supabase
+        .from("matches")
+        .update(updateData)
+        .eq("id", match.id);
+
+      if (error) throw error;
+
+      toast.success("Match updated successfully");
+      onUpdate();
+      onClose();
+    } catch (error) {
+      console.error("Error updating match:", error);
+      toast.error("Failed to update match");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  return (
+    <Dialog
+      isOpen={true}
+      onClose={onClose}
+      title="Edit Match"
+    >
+      <form onSubmit={(e) => {
+        e.preventDefault();
+        const formData = new FormData(e.currentTarget);
+        handleSubmit({
+          start_time: formData.get("start_time"),
+          stream_url: formData.get("stream_url"),
+          status: formData.get("status"),
+          team1_score: Number(formData.get("team1_score")),
+          team2_score: Number(formData.get("team2_score")),
+        });
+      }}>
+        <div className="space-y-4">
+          <div>
+            <label className="block text-sm font-medium text-gray-700">Start Time</label>
+            <input
+              type="datetime-local"
+              name="start_time"
+              defaultValue={match.start_time.slice(0, 16)}
+              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent text-gray-900"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700">Stream URL</label>
+            <input
+              type="url"
+              name="stream_url"
+              defaultValue={match.stream_url || ""}
+              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent text-gray-900"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700">Status</label>
+            <select
+              name="status"
+              defaultValue={match.status}
+              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent text-gray-900"
+            >
+              <option value="scheduled">Scheduled</option>
+              <option value="live">Live</option>
+              <option value="completed">Completed</option>
+            </select>
+          </div>
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700">{match.team1.team_name} Score</label>
+              <input
+                type="number"
+                name="team1_score"
+                defaultValue={match.team1_score}
+                className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent text-gray-900"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700">{match.team2.team_name} Score</label>
+              <input
+                type="number"
+                name="team2_score"
+                defaultValue={match.team2_score}
+                className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent text-gray-900"
+              />
+            </div>
+          </div>
+        </div>
+        <div className="mt-6 flex justify-end gap-4">
+          <Button
+            onClick={onClose}
+            variant="secondary"
+          >
+            Cancel
+          </Button>
+          <Button
+            type="submit"
+            disabled={isLoading}
+            leftIcon={isLoading ? <RefreshCw className="h-4 w-4 animate-spin" /> : null}
+          >
+            {isLoading ? "Saving..." : "Save"}
+          </Button>
+        </div>
+      </form>
+    </Dialog>
+  );
+};
+
 const Matches: React.FC = () => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
+  const [editingMatch, setEditingMatch] = useState<any | null>(null);
   const { matches, loading, fetchMatches, createMatch, subscribeToMatches } = useMatchStore();
   const { tournaments, fetchTournaments } = useTournamentStore();
   const { registrations, fetchRegistrations } = useRegistrationStore();
@@ -70,6 +197,22 @@ const Matches: React.FC = () => {
     }
   };
 
+  const handleDeleteMatch = async (matchId: string) => {
+    if (!confirm("Are you sure you want to delete this match?")) return;
+
+    try {
+      await supabase
+        .from('matches')
+        .delete()
+        .eq('id', matchId);
+
+      toast.success('Match deleted successfully');
+      fetchMatches();
+    } catch (error) {
+      toast.error('Failed to delete match');
+    }
+  };
+
   const filteredMatches = matches.filter(match =>
     match.tournaments?.title.toLowerCase().includes(searchTerm.toLowerCase())
   );
@@ -114,7 +257,7 @@ const Matches: React.FC = () => {
                 <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
                   <div className="flex items-center gap-3">
                     <Trophy className="h-5 w-5 text-purple-600" />
-                    <h3 className="text-lg font-medium text-gray-900">{match.tournaments?.title}</h3>
+                    <h3 className="text-lg font-medium text-gray-900">{match.tournament_id?.title}</h3>
                   </div>
                   <div className="flex items-center gap-3">
                     <span className="text-sm text-gray-500">
@@ -225,6 +368,22 @@ const Matches: React.FC = () => {
                       Complete Match
                     </Button>
                   )}
+                  <Button
+                    onClick={() => setEditingMatch(match)}
+                    leftIcon={<Edit className="h-4 w-4" />}
+                    variant="secondary"
+                    className="w-full sm:w-auto"
+                  >
+                    Edit
+                  </Button>
+                  <Button
+                    onClick={() => handleDeleteMatch(match.id)}
+                    leftIcon={<Trash2 className="h-4 w-4" />}
+                    variant="danger"
+                    className="w-full sm:w-auto"
+                  >
+                    Delete
+                  </Button>
                 </div>
               </div>
             </div>
@@ -243,6 +402,14 @@ const Matches: React.FC = () => {
           isLoading={loading}
         />
       </Dialog>
+
+      {editingMatch && (
+        <EditMatchModal
+          match={editingMatch}
+          onClose={() => setEditingMatch(null)}
+          onUpdate={fetchMatches}
+        />
+      )}
     </div>
   );
 };

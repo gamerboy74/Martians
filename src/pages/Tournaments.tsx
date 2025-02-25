@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Trophy, Calendar, Users, DollarSign, Plus, Search } from 'lucide-react';
+import { Trophy, Calendar, Users, Plus, Search } from 'lucide-react';
 import { Dialog } from '../components/ui/Dialog';
 import { TournamentForm } from '../components/ui/TournamentForm';
 import { Button } from '../components/ui/Button';
@@ -8,6 +8,7 @@ import { useTournamentStore } from '../stores/tournamentStore';
 import { useToast } from '../hooks/useToast';
 import { formatDate } from '../lib/utils';
 import { supabase } from '../lib/supabase';
+import { FaRupeeSign } from 'react-icons/fa';
 
 interface RegistrationCount {
   [key: string]: {
@@ -157,7 +158,7 @@ const Tournaments: React.FC = () => {
                             </span>
                           </div>
                           <div className="flex items-center">
-                            <DollarSign className="h-4 w-4 mr-1" />
+                            <FaRupeeSign className="h-4 w-4 mr-1" />
                             <span>{tournament.prize_pool}</span>
                           </div>
                         </div>

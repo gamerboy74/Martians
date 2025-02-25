@@ -126,6 +126,15 @@ const Settings: React.FC = () => {
     }
   };
 
+  const handleMaintenanceToggle = async (value: boolean) => {
+    const success = await setMaintenanceMode(value);
+    if (success) {
+      toast.success(`Maintenance mode ${value ? "enabled" : "disabled"}`);
+    } else {
+      toast.error("Failed to update maintenance mode");
+    }
+  };
+
   const handleSave = async () => {
     try {
       await updateProfile({
@@ -316,10 +325,30 @@ const Settings: React.FC = () => {
                     <input
                       type="checkbox"
                       checked={maintenanceMode}
-                      onChange={(e) => setMaintenanceMode(e.target.checked)}
+                      onChange={async (e) => {
+                        const success = await setMaintenanceMode(
+                          e.target.checked
+                        );
+                        if (success) {
+                          toast.success(
+                            `Maintenance mode ${e.target.checked ? "enabled" : "disabled"}`
+                          );
+                        } else {
+                          toast.error("Failed to update maintenance mode");
+                        }
+                      }}
+                      disabled={loading}
                       className="sr-only peer"
                     />
-                    <div className="w-14 h-7 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-purple-300 dark:peer-focus:ring-purple-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-6 after:w-6 after:transition-all dark:border-gray-600 peer-checked:bg-purple-600"></div>
+                    <div
+                      className={`w-14 h-7 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-purple-300 dark:peer-focus:ring-purple-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-6 after:w-6 after:transition-all dark:border-gray-600 peer-checked:bg-purple-600 ${loading ? "opacity-50 cursor-not-allowed" : ""}`}
+                    >
+                      {loading && (
+                        <div className="absolute inset-0 flex items-center justify-center">
+                          <div className="w-4 h-4 border-2 border-purple-600 border-t-transparent rounded-full animate-spin"></div>
+                        </div>
+                      )}
+                    </div>
                   </label>
                 </div>
               </div>

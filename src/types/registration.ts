@@ -14,7 +14,7 @@ export const registrationSchema = z.object({
     teamMembers: z.array(z.object({
       name: z.string().min(3, 'Member name must be at least 3 characters'),
       username: z.string().min(3, 'Username must be at least 3 characters'),
-    })).min(3, 'At least 3 team members required'),
+    })).min(4, 'At least 4 team members required'),
     isTeamCaptain: z.boolean(),
   }),
   gameDetails: z.object({

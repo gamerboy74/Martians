@@ -14,19 +14,20 @@ import Teams from './pages/Teams';
 import Leaderboard from './pages/Leaderboard';
 import Settings from './pages/Settings';
 import FeaturedGames from './pages/FeaturedGames';
-import AllMatches from './pages/AllMatches';
+import AllMatches from './pages/pastTournamentsCard';
 import TournamentView from './pages/TournamentView';
 import TournamentResults from './pages/TournamentResults';
-import Schedule from './pages/Schedule';
+import Schedule from './pages/viewScheduleCard';
 import ResultsManagement from './pages/ResultsManagement';
 import Notifications from './components/Notifications';
 import Navbar from './components/Navbar';
 import HomeSection from './components/HomeSection';
-import TournamentRegistration from './components/TournamentRegistration';
+import TournamentRegistration from './components/TournamentSection';
 import MatchesSection from './components/MatchesSection';
 import LeaderboardSection from './components/Leaderboard';
 import Footer from './components/Footer';
 import BGMIRegistration from './components/BGMIRegistration';
+import PastMatches from './pages/PastMatches'; // Add this import
 import { useSettingsStore } from './stores/settingsStore';
 
 function MaintenanceMode() {
@@ -82,6 +83,7 @@ function App() {
             <Route path="/tournament/:id" element={<TournamentView />} />
             <Route path="/tournament/:id/results" element={<TournamentResults />} />
             <Route path="/schedule" element={<Schedule />} />
+            <Route path="/past-matches" element={<PastMatches />} /> {/* Added new route */}
             
             {/* Admin routes - all wrapped in ProtectedRoute */}
             <Route path="/admin" element={

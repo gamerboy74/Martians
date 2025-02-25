@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { Trophy, Calendar, Users, ArrowLeft, Medal, Crown, Target, Shield, DollarSign, Info } from 'lucide-react';
+import { Trophy, Calendar, Users, ArrowLeft, Medal, Crown, Target, Shield, Info } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 import { formatDate } from '../lib/utils';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
+import { FaRupeeSign } from 'react-icons/fa';
 
 interface TournamentResult {
   id: string;
@@ -191,7 +192,7 @@ const TournamentResults: React.FC = () => {
         <div className="absolute inset-0 bg-gradient-to-b from-purple-900/20 via-black to-black pointer-events-none" />
         
         <div className="relative px-8 py-24">
-          <div className="max-w-7xl mx-auto">
+          <div className="max-w-7xl mt-10 mx-auto">
             <Link
               to="/all-matches"
               className="inline-flex items-center gap-2 text-purple-400 hover:text-purple-300 transition-colors mb-8"
@@ -232,7 +233,7 @@ const TournamentResults: React.FC = () => {
                     </div>
                   </div>
                   <div className="flex items-center gap-4">
-                    <DollarSign className="w-8 h-8 text-purple-400" />
+                    <FaRupeeSign className="w-8 h-8 text-purple-400" />
                     <div>
                       <h3 className="text-sm text-gray-400">Prize Pool</h3>
                       <p className="text-white">{tournament.prize_pool}</p>

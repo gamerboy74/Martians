@@ -6,7 +6,7 @@ const Notifications: React.FC = () => {
   const { notifications, removeNotification } = useApp();
 
   return (
-    <div className="fixed top-16 right-4 z-50 space-y-4">
+    <div className="fixed top-20 right-4 z-50 space-y-4">
       {notifications.map((notification) => (
         <div
           key={notification.id}

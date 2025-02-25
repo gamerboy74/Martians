@@ -1,5 +1,6 @@
 import React from 'react';
 import { DollarSign, Users, Monitor, Trophy } from 'lucide-react';
+import { FaRupeeSign } from 'react-icons/fa';
 
 interface Tournament {
   id: number;
@@ -75,7 +76,7 @@ const TournamentCard: React.FC<{ tournament: Tournament }> = ({ tournament }) =>
         
         <div className="flex items-center gap-4 text-sm">
           <div className="tournament-stat">
-            <DollarSign size={16} className="text-purple-400" />
+            <FaRupeeSign size={16} className="text-purple-400" />
             <span>{tournament.prize}</span>
           </div>
           <div className="tournament-stat">

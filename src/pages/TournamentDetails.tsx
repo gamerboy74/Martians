@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { Trophy, Calendar, Users, DollarSign, Edit, Trash2, CheckCircle, Clock, XCircle } from 'lucide-react';
+import { Trophy, Calendar, Users, Edit, Trash2, CheckCircle, Clock, XCircle } from 'lucide-react';
 import { Dialog } from '../components/ui/Dialog';
 import { TournamentForm } from '../components/ui/TournamentForm';
 import { Button } from '../components/ui/Button';
@@ -8,6 +8,7 @@ import { useTournamentStore } from '../stores/tournamentStore';
 import { useToast } from '../hooks/useToast';
 import { formatDate } from '../lib/utils';
 import { supabase } from '../lib/supabase';
+import { FaRupeeSign } from 'react-icons/fa';
 
 interface Registration {
   id: string;
@@ -167,7 +168,7 @@ const TournamentDetails: React.FC = () => {
                   <span>{approvedCount}/{selectedTournament.max_participants} Participants</span>
                 </div>
                 <div className="flex items-center">
-                  <DollarSign className="h-5 w-5 mr-2" />
+                  <FaRupeeSign className="h-5 w-5 mr-2" />
                   <span>{selectedTournament.prize_pool} Prize Pool</span>
                 </div>
               </div>

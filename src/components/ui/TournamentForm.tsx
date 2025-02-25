@@ -159,7 +159,7 @@ export function TournamentForm({ onSubmit, initialData, isLoading }: TournamentF
               type="text"
               {...register('prize_pool')}
               className={inputClasses}
-              placeholder="e.g., $10,000"
+              placeholder="e.g.,10,000"
             />
             {errors.prize_pool && (
               <p className="mt-1 text-sm text-red-600">{errors.prize_pool.message}</p>
