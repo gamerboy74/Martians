@@ -1,11 +1,21 @@
-import React, { useEffect, useState } from 'react';
-import { useParams, Link } from 'react-router-dom';
-import { Trophy, Calendar, Users, ArrowLeft, Medal, Crown, Target, Shield, Info } from 'lucide-react';
-import { supabase } from '../lib/supabase';
-import { formatDate } from '../lib/utils';
-import Navbar from '../components/Navbar';
-import Footer from '../components/Footer';
-import { FaRupeeSign } from 'react-icons/fa';
+import React, { useEffect, useState } from "react";
+import { useParams, Link } from "react-router-dom";
+import {
+  Trophy,
+  Calendar,
+  Users,
+  ArrowLeft,
+  Medal,
+  Crown,
+  Target,
+  Shield,
+  Info,
+} from "lucide-react";
+import { supabase } from "../lib/supabase";
+import { formatDate } from "../lib/utils";
+import Navbar from "./Navbar";
+import Footer from "./Footer";
+import { FaRupeeSign } from "react-icons/fa";
 
 interface TournamentResult {
   id: string;
@@ -56,9 +66,9 @@ const TournamentResults: React.FC = () => {
 
         // Fetch tournament details
         const { data: tournamentData, error: tournamentError } = await supabase
-          .from('tournaments')
-          .select('*')
-          .eq('id', id)
+          .from("tournaments")
+          .select("*")
+          .eq("id", id)
           .single();
 
         if (tournamentError) throw tournamentError;
@@ -66,42 +76,46 @@ const TournamentResults: React.FC = () => {
 
         // Fetch registration count for this tournament
         const { count, error: countError } = await supabase
-          .from('registrations')
-          .select('*', { count: 'exact', head: true })
-          .eq('tournament_id', id)
-          .eq('status', 'approved');
+          .from("registrations")
+          .select("*", { count: "exact", head: true })
+          .eq("tournament_id", id)
+          .eq("status", "approved");
 
         if (!countError) {
           setParticipantCount(count || 0);
         }
 
         // Fetch all registrations for this tournament
-        const { data: registrationsData, error: registrationsError } = await supabase
-          .from('registrations')
-          .select('id, team_name, logo_url, status, created_at')
-          .eq('tournament_id', id)
-          .order('created_at', { ascending: false });
+        const { data: registrationsData, error: registrationsError } =
+          await supabase
+            .from("registrations")
+            .select("id, team_name, logo_url, status, created_at")
+            .eq("tournament_id", id)
+            .order("created_at", { ascending: false });
 
         if (registrationsError) throw registrationsError;
         setRegistrations(registrationsData || []);
 
         // Fetch team results from leaderboard for this tournament's teams
-        const { data: leaderboardData, error: leaderboardError } = await supabase
-          .from('leaderboard')
-          .select(`
+        const { data: leaderboardData, error: leaderboardError } =
+          await supabase
+            .from("leaderboard")
+            .select(
+              `
             *,
             registrations!inner (
               team_name,
               logo_url,
               tournament_id
             )
-          `)
-          .eq('registrations.tournament_id', id)
-          .order('total_points', { ascending: false });
+          `
+            )
+            .eq("registrations.tournament_id", id)
+            .order("total_points", { ascending: false });
 
         if (leaderboardError) throw leaderboardError;
 
-        const formattedTeams = (leaderboardData || []).map(entry => ({
+        const formattedTeams = (leaderboardData || []).map((entry) => ({
           id: entry.team_id,
           team_name: entry.registrations.team_name,
           logo_url: entry.registrations.logo_url,
@@ -109,12 +123,12 @@ const TournamentResults: React.FC = () => {
           survival_points: entry.survival_points,
           kill_points: entry.kill_points,
           matches_played: entry.matches_played,
-          wins: entry.wins
+          wins: entry.wins,
         }));
 
         setTeams(formattedTeams);
       } catch (error) {
-        console.error('Error fetching tournament data:', error);
+        console.error("Error fetching tournament data:", error);
       } finally {
         setLoading(false);
       }
@@ -124,14 +138,14 @@ const TournamentResults: React.FC = () => {
 
     // Subscribe to changes
     const registrationsSubscription = supabase
-      .channel('registrations_changes')
+      .channel("registrations_changes")
       .on(
-        'postgres_changes',
-        { 
-          event: '*', 
-          schema: 'public', 
-          table: 'registrations',
-          filter: `tournament_id=eq.${id}`
+        "postgres_changes",
+        {
+          event: "*",
+          schema: "public",
+          table: "registrations",
+          filter: `tournament_id=eq.${id}`,
         },
         () => {
           fetchTournamentData();
@@ -140,13 +154,13 @@ const TournamentResults: React.FC = () => {
       .subscribe();
 
     const leaderboardSubscription = supabase
-      .channel('leaderboard_changes')
+      .channel("leaderboard_changes")
       .on(
-        'postgres_changes',
-        { 
-          event: '*', 
-          schema: 'public', 
-          table: 'leaderboard'
+        "postgres_changes",
+        {
+          event: "*",
+          schema: "public",
+          table: "leaderboard",
         },
         () => {
           fetchTournamentData();
@@ -172,7 +186,9 @@ const TournamentResults: React.FC = () => {
     return (
       <div className="min-h-screen bg-black flex items-center justify-center">
         <div className="text-center">
-          <h2 className="text-2xl font-bold text-white mb-4">Tournament not found</h2>
+          <h2 className="text-2xl font-bold text-white mb-4">
+            Tournament not found
+          </h2>
           <Link
             to="/all-matches"
             className="inline-flex items-center gap-2 text-purple-400 hover:text-purple-300 transition-colors"
@@ -190,7 +206,7 @@ const TournamentResults: React.FC = () => {
       <Navbar />
       <div className="min-h-screen bg-black relative">
         <div className="absolute inset-0 bg-gradient-to-b from-purple-900/20 via-black to-black pointer-events-none" />
-        
+
         <div className="relative px-8 py-24">
           <div className="max-w-7xl mt-10 mx-auto">
             <Link
@@ -205,7 +221,10 @@ const TournamentResults: React.FC = () => {
             <div className="bg-purple-900/20 backdrop-blur-sm rounded-xl overflow-hidden mb-12">
               <div className="relative h-64">
                 <img
-                  src={tournament.image_url || 'https://images.unsplash.com/photo-1542751371-adc38448a05e?w=1600&h=400&fit=crop'}
+                  src={
+                    tournament.image_url ||
+                    "https://images.unsplash.com/photo-1542751371-adc38448a05e?w=1600&h=400&fit=crop"
+                  }
                   alt={tournament.title}
                   className="w-full h-full object-cover"
                 />
@@ -216,10 +235,13 @@ const TournamentResults: React.FC = () => {
                       {tournament.game}
                     </span>
                     <span className="px-3 py-1 bg-green-500/80 text-white text-sm rounded-full">
-                      {tournament.status.charAt(0).toUpperCase() + tournament.status.slice(1)}
+                      {tournament.status.charAt(0).toUpperCase() +
+                        tournament.status.slice(1)}
                     </span>
                   </div>
-                  <h1 className="text-4xl font-bold text-white">{tournament.title}</h1>
+                  <h1 className="text-4xl font-bold text-white">
+                    {tournament.title}
+                  </h1>
                 </div>
               </div>
 
@@ -228,8 +250,13 @@ const TournamentResults: React.FC = () => {
                   <div className="flex items-center gap-4">
                     <Calendar className="w-8 h-8 text-purple-400" />
                     <div>
-                      <h3 className="text-sm text-gray-400">Tournament Dates</h3>
-                      <p className="text-white">{formatDate(tournament.start_date)} - {formatDate(tournament.end_date)}</p>
+                      <h3 className="text-sm text-gray-400">
+                        Tournament Dates
+                      </h3>
+                      <p className="text-white">
+                        {formatDate(tournament.start_date)} -{" "}
+                        {formatDate(tournament.end_date)}
+                      </p>
                     </div>
                   </div>
                   <div className="flex items-center gap-4">
@@ -243,13 +270,17 @@ const TournamentResults: React.FC = () => {
                     <Users className="w-8 h-8 text-purple-400" />
                     <div>
                       <h3 className="text-sm text-gray-400">Participants</h3>
-                      <p className="text-white">{participantCount}/{tournament.max_participants}</p>
+                      <p className="text-white">
+                        {participantCount}/{tournament.max_participants}
+                      </p>
                     </div>
                   </div>
                 </div>
 
                 <div className="border-t border-purple-500/20 pt-8">
-                  <h2 className="text-xl font-bold text-white mb-4">About Tournament</h2>
+                  <h2 className="text-xl font-bold text-white mb-4">
+                    About Tournament
+                  </h2>
                   <p className="text-gray-300">{tournament.description}</p>
                 </div>
               </div>
@@ -257,25 +288,42 @@ const TournamentResults: React.FC = () => {
 
             {/* Final Standings */}
             <div className="space-y-12">
-              <h2 className="text-3xl font-bold text-white text-center">Final Standings</h2>
+              <h2 className="text-3xl font-bold text-white text-center">
+                Final Standings
+              </h2>
 
               {/* Top 3 Teams */}
               <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                 {teams.slice(0, 3).map((team, index) => {
-                  const Icon = index === 0 ? Crown : index === 1 ? Medal : Shield;
+                  const Icon =
+                    index === 0 ? Crown : index === 1 ? Medal : Shield;
                   const colors = [
-                    { bg: 'bg-yellow-100', text: 'text-yellow-600', border: 'border-yellow-200' },
-                    { bg: 'bg-gray-100', text: 'text-gray-600', border: 'border-gray-200' },
-                    { bg: 'bg-orange-100', text: 'text-orange-600', border: 'border-orange-200' },
+                    {
+                      bg: "bg-yellow-100",
+                      text: "text-yellow-600",
+                      border: "border-yellow-200",
+                    },
+                    {
+                      bg: "bg-gray-100",
+                      text: "text-gray-600",
+                      border: "border-gray-200",
+                    },
+                    {
+                      bg: "bg-orange-100",
+                      text: "text-orange-600",
+                      border: "border-orange-200",
+                    },
                   ];
                   return (
                     <div
                       key={team.id}
-                      className={`${index === 0 ? 'md:order-2' : index === 1 ? 'md:order-1' : 'md:order-3'} 
+                      className={`${index === 0 ? "md:order-2" : index === 1 ? "md:order-1" : "md:order-3"} 
                       bg-purple-900/20 backdrop-blur-sm rounded-xl p-8 text-center transform hover:scale-105 transition-transform duration-300`}
                     >
                       <div className="flex justify-center mb-6">
-                        <div className={`relative w-24 h-24 ${colors[index].bg} rounded-full flex items-center justify-center border-4 ${colors[index].border}`}>
+                        <div
+                          className={`relative w-24 h-24 ${colors[index].bg} rounded-full flex items-center justify-center border-4 ${colors[index].border}`}
+                        >
                           {team.logo_url ? (
                             <img
                               src={team.logo_url}
@@ -283,16 +331,23 @@ const TournamentResults: React.FC = () => {
                               className="w-20 h-20 rounded-full object-cover"
                               onError={(e) => {
                                 const target = e.target as HTMLImageElement;
-                                target.src = 'https://via.placeholder.com/80?text=Team';
+                                target.src =
+                                  "https://via.placeholder.com/80?text=Team";
                               }}
                             />
                           ) : (
-                            <Icon className={`w-12 h-12 ${colors[index].text}`} />
+                            <Icon
+                              className={`w-12 h-12 ${colors[index].text}`}
+                            />
                           )}
                         </div>
                       </div>
-                      <h3 className="text-xl font-bold text-white mb-2">{team.team_name}</h3>
-                      <div className="text-4xl font-bold text-purple-400 mb-4">{team.total_points}</div>
+                      <h3 className="text-xl font-bold text-white mb-2">
+                        {team.team_name}
+                      </h3>
+                      <div className="text-4xl font-bold text-purple-400 mb-4">
+                        {team.total_points}
+                      </div>
                       <div className="space-y-2 text-gray-300">
                         <div className="flex justify-between">
                           <span>Survival Points:</span>
@@ -322,13 +377,27 @@ const TournamentResults: React.FC = () => {
                   <table className="w-full">
                     <thead>
                       <tr className="border-b border-purple-500/20">
-                        <th className="px-6 py-4 text-left text-sm font-medium text-gray-300">Rank</th>
-                        <th className="px-6 py-4 text-left text-sm font-medium text-gray-300">Team</th>
-                        <th className="px-6 py-4 text-right text-sm font-medium text-gray-300">Survival Points</th>
-                        <th className="px-6 py-4 text-right text-sm font-medium text-gray-300">Kill Points</th>
-                        <th className="px-6 py-4 text-right text-sm font-medium text-gray-300">Total Points</th>
-                        <th className="px-6 py-4 text-right text-sm font-medium text-gray-300">Matches</th>
-                        <th className="px-6 py-4 text-right text-sm font-medium text-gray-300">Wins</th>
+                        <th className="px-6 py-4 text-left text-sm font-medium text-gray-300">
+                          Rank
+                        </th>
+                        <th className="px-6 py-4 text-left text-sm font-medium text-gray-300">
+                          Team
+                        </th>
+                        <th className="px-6 py-4 text-right text-sm font-medium text-gray-300">
+                          Survival Points
+                        </th>
+                        <th className="px-6 py-4 text-right text-sm font-medium text-gray-300">
+                          Kill Points
+                        </th>
+                        <th className="px-6 py-4 text-right text-sm font-medium text-gray-300">
+                          Total Points
+                        </th>
+                        <th className="px-6 py-4 text-right text-sm font-medium text-gray-300">
+                          Matches
+                        </th>
+                        <th className="px-6 py-4 text-right text-sm font-medium text-gray-300">
+                          Wins
+                        </th>
                       </tr>
                     </thead>
                     <tbody>
@@ -339,7 +408,9 @@ const TournamentResults: React.FC = () => {
                         >
                           <td className="px-6 py-4 whitespace-nowrap">
                             <div className="flex items-center">
-                              <span className="text-2xl font-bold text-purple-400">#{index + 1}</span>
+                              <span className="text-2xl font-bold text-purple-400">
+                                #{index + 1}
+                              </span>
                             </div>
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap">
@@ -351,7 +422,8 @@ const TournamentResults: React.FC = () => {
                                   className="w-10 h-10 rounded-full object-cover"
                                   onError={(e) => {
                                     const target = e.target as HTMLImageElement;
-                                    target.src = 'https://via.placeholder.com/40?text=Team';
+                                    target.src =
+                                      "https://via.placeholder.com/40?text=Team";
                                   }}
                                 />
                               ) : (
@@ -359,7 +431,9 @@ const TournamentResults: React.FC = () => {
                                   <Target className="w-5 h-5 text-purple-400" />
                                 </div>
                               )}
-                              <span className="ml-4 font-medium text-white">{team.team_name}</span>
+                              <span className="ml-4 font-medium text-white">
+                                {team.team_name}
+                              </span>
                             </div>
                           </td>
                           <td className="px-6 py-4 text-right whitespace-nowrap text-gray-300">
@@ -369,7 +443,9 @@ const TournamentResults: React.FC = () => {
                             {team.kill_points}
                           </td>
                           <td className="px-6 py-4 text-right whitespace-nowrap">
-                            <span className="text-lg font-bold text-purple-400">{team.total_points}</span>
+                            <span className="text-lg font-bold text-purple-400">
+                              {team.total_points}
+                            </span>
                           </td>
                           <td className="px-6 py-4 text-right whitespace-nowrap text-gray-300">
                             {team.matches_played}
@@ -388,7 +464,9 @@ const TournamentResults: React.FC = () => {
             {/* Registrations Section */}
             <div className="relative px-8 py-12">
               <div className="max-w-7xl mx-auto">
-                <h2 className="text-3xl font-bold text-white mb-8">Tournament Registrations</h2>
+                <h2 className="text-3xl font-bold text-white mb-8">
+                  Tournament Registrations
+                </h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                   {registrations.map((registration) => (
                     <div
@@ -403,7 +481,8 @@ const TournamentResults: React.FC = () => {
                             className="w-16 h-16 rounded-full object-cover"
                             onError={(e) => {
                               const target = e.target as HTMLImageElement;
-                              target.src = 'https://via.placeholder.com/64?text=Team';
+                              target.src =
+                                "https://via.placeholder.com/64?text=Team";
                             }}
                           />
                         ) : (
@@ -412,15 +491,20 @@ const TournamentResults: React.FC = () => {
                           </div>
                         )}
                         <div>
-                          <h3 className="text-lg font-semibold text-white">{registration.team_name}</h3>
-                          <span className={`inline-block px-3 py-1 rounded-full text-xs font-medium ${
-                            registration.status === 'approved' 
-                              ? 'bg-green-500/20 text-green-400'
-                              : registration.status === 'rejected'
-                              ? 'bg-red-500/20 text-red-400'
-                              : 'bg-yellow-500/20 text-yellow-400'
-                          }`}>
-                            {registration.status.charAt(0).toUpperCase() + registration.status.slice(1)}
+                          <h3 className="text-lg font-semibold text-white">
+                            {registration.team_name}
+                          </h3>
+                          <span
+                            className={`inline-block px-3 py-1 rounded-full text-xs font-medium ${
+                              registration.status === "approved"
+                                ? "bg-green-500/20 text-green-400"
+                                : registration.status === "rejected"
+                                  ? "bg-red-500/20 text-red-400"
+                                  : "bg-yellow-500/20 text-yellow-400"
+                            }`}
+                          >
+                            {registration.status.charAt(0).toUpperCase() +
+                              registration.status.slice(1)}
                           </span>
                         </div>
                       </div>

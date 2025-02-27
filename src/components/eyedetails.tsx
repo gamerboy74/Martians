@@ -1,17 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
-import {
-  Trophy,
-  Calendar,
-  Users,
-  ArrowLeft,
-  Clock,
-  Info,
-} from "lucide-react";
+import { Trophy, Calendar, Users, ArrowLeft, Clock, Info } from "lucide-react";
 import { supabase } from "../lib/supabase";
 import { formatDate } from "../lib/utils";
-import Navbar from "../components/Navbar";
-import Footer from "../components/Footer";
+import Navbar from "./Navbar";
+import Footer from "./Footer";
 import { FaRupeeSign } from "react-icons/fa";
 
 interface Tournament {

@@ -1,7 +1,7 @@
 import React, { useState, useCallback, useMemo } from "react";
 import { CreditCard, CheckCircle, Upload } from "lucide-react";
 import { supabase } from "../../lib/supabase";
-import { v4 as uuidv4 } from 'uuid'; // Import UUID for unique identifiers
+import { v4 as uuidv4 } from "uuid"; // Import UUID for unique identifiers
 
 interface CheckoutPageProps {
   fee: number;
@@ -115,7 +115,8 @@ const CheckoutPage: React.FC<CheckoutPageProps> = React.memo(
     );
 
     const handleSubmit = useCallback(async () => {
-      const { file, isUploading, uploadComplete, isSubmitted, uuid } = uploadState;
+      const { file, isUploading, uploadComplete, isSubmitted, uuid } =
+        uploadState;
       console.log("Attempting submit, state:", {
         txId,
         file,
@@ -140,7 +141,8 @@ const CheckoutPage: React.FC<CheckoutPageProps> = React.memo(
         return;
       }
 
-      if (!uploadComplete || !uuid) { // Check if uuid exists
+      if (!uploadComplete || !uuid) {
+        // Check if uuid exists
         console.log("Upload or UUID not complete; re-checking...");
         return;
       }
@@ -286,15 +288,19 @@ const CheckoutPage: React.FC<CheckoutPageProps> = React.memo(
                 className="w-full py-3 bg-purple-600 hover:bg-purple-700 rounded-lg text-white font-medium flex items-center justify-center gap-2 disabled:opacity-50"
               >
                 <CheckCircle className="w-5 h-5" />
-                {uploadState.isUploading ||
-                uploadState.isSubmitted ||
-                isSubmitting
+                {uploadState.isUploading
                   ? "UPLOADING..."
-                  : "I’ve Paid - Submit Registration"}
+                  : isSubmitting || uploadState.isSubmitted
+                    ? "SUBMITTING..."
+                    : "I’ve Paid - Submit Registration"}
               </button>
               <button
                 onClick={onBack}
-                disabled={uploadState.isUploading || uploadState.isSubmitted}
+                disabled={
+                  uploadState.isUploading ||
+                  uploadState.isSubmitted ||
+                  isSubmitting
+                }
                 className="w-full py-3 bg-transparent border border-purple-500/50 hover:bg-purple-500/10 rounded-lg text-purple-400 font-medium"
               >
                 Back to Form

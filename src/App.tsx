@@ -1,4 +1,3 @@
-import React from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AppProvider } from "./context/AppContext";
 import { ErrorBoundary } from "./components/ErrorBoundary";
@@ -15,9 +14,9 @@ import Leaderboard from "./pages/Leaderboard";
 import Settings from "./pages/Settings";
 import FeaturedGames from "./pages/FeaturedGames";
 import AllMatches from "./pages/pastTournamentsCard";
-import TournamentView from "./pages/TournamentView";
-import TournamentResults from "./pages/TournamentResults";
-import Schedule from "./pages/viewScheduleCard";
+import TournamentView from "./components/eyedetails";
+import TournamentResults from "./components/TournamentResults";
+import Schedule from "./components/viewScheduleCard";
 import ResultsManagement from "./pages/ResultsManagement";
 import Notifications from "./components/Notifications";
 import Navbar from "./components/Navbar";

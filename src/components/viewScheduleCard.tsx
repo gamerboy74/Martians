@@ -12,8 +12,8 @@ import {
 import { useTournaments } from "../hooks/useTournaments";
 import { formatDate } from "../lib/utils";
 import { supabase } from "../lib/supabase";
-import Navbar from "../components/Navbar";
-import Footer from "../components/Footer";
+import Navbar from "./Navbar";
+import Footer from "./Footer";
 import { FaRupeeSign } from "react-icons/fa";
 
 interface TeamCount {

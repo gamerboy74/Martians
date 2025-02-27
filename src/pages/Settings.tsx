@@ -1,15 +1,11 @@
 import React, { useState, useEffect } from "react";
 import {
-  Settings as SettingsIcon,
   Bell,
-  Lock,
   Globe,
-  Database,
   Shield,
   Moon,
   Sun,
   Palette,
-  Cloud,
   Server,
   User,
   Save,
