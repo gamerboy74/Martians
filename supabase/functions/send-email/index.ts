@@ -64,7 +64,7 @@ serve(async (req) => {
           <style>
             body {
               font-family: 'Arial', sans-serif;
-              background-color: #f5f5f5;
+              background-color: #FFF5E1;
               margin: 0;
               padding: 0;
               color: #333;
@@ -72,7 +72,7 @@ serve(async (req) => {
             .container {
               max-width: 600px;
               margin: 20px auto;
-              background-color: #ffffff;
+              background-color: #FFF2F2;
               border-radius: 10px;
               box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
               overflow: hidden;

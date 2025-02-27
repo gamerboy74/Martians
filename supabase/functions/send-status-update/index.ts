@@ -1,13 +1,16 @@
-import { serve } from "https://deno.land/std@0.168.0/http/server.ts"; // Updated to a newer version
-import { Resend } from "https://esm.sh/resend@2.0.0"; // Pinned to a stable version
+import { serve } from "https://deno.land/std@0.131.0/http/server.ts";
+import { Resend } from "https://esm.sh/resend"; // Unpinned like the first version
 
 const resend = new Resend(Deno.env.get("RESEND_API_KEY"));
+console.log("API Key:", Deno.env.get("RESEND_API_KEY"));
+
+
 
 // List of allowed origins for CORS
 const ALLOWED_ORIGINS = [
+  "https://martiansgg.netlify.app",
   "http://localhost:5175", // Your current dev origin
   "http://localhost:5173", // Common Vite default port
-  "https://martiansgg.netlify.app/", // Add your production domain later
 ];
 
 serve(async (req: Request) => {
@@ -68,7 +71,9 @@ serve(async (req: Request) => {
           <style>
             body {
               font-family: 'Arial', sans-serif;
-              background-color: #f5f5f5;
+              background-color: #FFF5E1
+
+;
               margin: 0;
               padding: 0;
               color: #333;
@@ -76,7 +81,7 @@ serve(async (req: Request) => {
             .container {
               max-width: 600px;
               margin: 20px auto;
-              background-color: #ffffff;
+              background-color: #FFF2F2;
               border-radius: 10px;
               box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
               overflow: hidden;
