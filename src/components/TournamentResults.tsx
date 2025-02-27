@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import {
-  Trophy,
   Calendar,
   Users,
   ArrowLeft,
@@ -9,7 +8,6 @@ import {
   Crown,
   Target,
   Shield,
-  Info,
 } from "lucide-react";
 import { supabase } from "../lib/supabase";
 import { formatDate } from "../lib/utils";

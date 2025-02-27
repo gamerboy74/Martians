@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback, useMemo } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { Dialog } from "./Dialog";
 import { formatDate } from "../../lib/utils";
 import { Trophy, Users, Monitor, MapPin } from "lucide-react";

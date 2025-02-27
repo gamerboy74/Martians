@@ -49,7 +49,7 @@ const CheckoutPage: React.FC<CheckoutPageProps> = React.memo(
         setUploadState((prev) => ({ ...prev, isUploading: true, error: null }));
         try {
           console.log("Uploading file with name:", fileName);
-          const { error, data } = await supabase.storage
+          const { error } = await supabase.storage
             .from("payment-screenshots")
             .upload(fileName, file, {
               cacheControl: "3600",

@@ -51,7 +51,7 @@ serve(async (req) => {
     console.log('Request origin:', origin, 'Environment:', Deno.env.get('ENV') || 'development');
 
     await resend.emails.send({
-      from: 'noreply@martiansgg.com', // Update to your verified Resend email/domain
+      from: 'onboarding@resend.dev', // Update to your verified Resend email/domain
       to: email,
       subject: 'Registration Received - BGMI Tournament',
       html: `

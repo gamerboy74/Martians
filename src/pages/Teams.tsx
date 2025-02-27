@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Search, Users, Trophy, Edit, Trash2, Eye } from "lucide-react";
+import { Search, Users, Trophy, Trash2, Eye } from "lucide-react";
 import { supabase } from "../lib/supabase"; // Adjust the path as necessary
 import { Button } from "../components/ui/Button"; // Adjust the path as necessary
 import { Dialog } from "../components/ui/Dialog"; // Adjust the path as necessary
