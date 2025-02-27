@@ -11,6 +11,7 @@ const ALLOWED_ORIGINS = [
   "https://martiansgg.netlify.app",
   "http://localhost:5175", // Your current dev origin
   "http://localhost:5173", // Common Vite default port
+  "https://martiansgg.netlify.app/", // Add your production domain later
 ];
 
 serve(async (req: Request) => {
