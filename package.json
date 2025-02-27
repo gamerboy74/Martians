@@ -1,0 +1,52 @@
+{
+  "name": "tournament-admin",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "lint": "eslint .",
+    "preview": "vite preview",
+    "supabase:migration": "supabase migration up",
+    "supabase:types": "ts-node scripts/generate-types.ts",
+    "supabase:reset": "supabase db reset && supabase migration up",
+    "supabase:seed": "supabase db reset --seed-file supabase/seeds/seed.sql"
+  },
+  "dependencies": {
+    "@hookform/resolvers": "^3.3.4",
+    "@supabase/supabase-js": "^2.39.7",
+    "@tanstack/react-query": "^5.66.9",
+    "clsx": "^2.1.0",
+    "date-fns": "^3.3.1",
+    "deno": "^2.2.2",
+    "express": "^4.21.2",
+    "lucide-react": "^0.344.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-hook-form": "^7.51.0",
+    "react-icons": "^5.5.0",
+    "react-router-dom": "^6.22.3",
+    "recharts": "^2.12.2",
+    "resend": "^4.1.2",
+    "swiper": "^11.2.4",
+    "tailwind-merge": "^2.2.1",
+    "uuid": "^11.1.0",
+    "zod": "^3.22.4",
+    "zustand": "^4.5.2"
+  },
+  "devDependencies": {
+    "@types/react": "^18.2.64",
+    "@types/react-dom": "^18.2.21",
+    "@types/uuid": "^10.0.0",
+    "@vitejs/plugin-react": "^4.2.1",
+    "autoprefixer": "^10.4.18",
+    "postcss": "^8.4.35",
+    "prettier": "^3.2.5",
+    "supabase": "^1.145.4",
+    "tailwindcss": "^3.4.1",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.4.2",
+    "vite": "^5.1.5"
+  }
+}

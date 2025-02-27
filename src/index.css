@@ -1,0 +1,382 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Base Styles */
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 222.2 47.4% 11.2%;
+  }
+
+  .dark {
+    --background: 224 71% 4%;
+    --foreground: 213 31% 91%;
+  }
+
+  html {
+    overflow-x: hidden;
+  }
+  
+  body {
+    @apply bg-black text-white overflow-x-hidden;
+  }
+
+  .dark body {
+    @apply bg-gray-900 text-gray-100;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply tracking-wide;
+  }
+
+  /* Mobile-first text sizing */
+  h1 {
+    @apply text-2xl md:text-4xl;
+  }
+
+  h2 {
+    @apply text-xl md:text-3xl;
+  }
+
+  h3 {
+    @apply text-lg md:text-2xl;
+  }
+
+  /* Improved table responsiveness */
+  table {
+    @apply min-w-full;
+  }
+
+  /* Better form controls on mobile */
+  input, select, textarea {
+    @apply text-base md:text-sm;
+  }
+
+  /* Improved touch targets */
+  button, a {
+    @apply min-h-[44px] md:min-h-[36px];
+  }
+}
+
+/* Dark mode styles */
+.dark .bg-white {
+  @apply bg-gray-800;
+}
+
+.dark .text-gray-900 {
+  @apply text-white;
+}
+
+.dark .text-gray-600 {
+  @apply text-gray-300;
+}
+
+.dark .border-gray-300 {
+  @apply border-gray-600;
+}
+
+.dark .bg-gray-50 {
+  @apply bg-gray-700;
+}
+
+/* Custom Animations */
+@layer utilities {
+  @keyframes float {
+    0%, 100% {
+      transform: translateY(0) scale(1);
+      opacity: 0.2;
+    }
+    50% {
+      transform: translateY(-100px) scale(1.1);
+      opacity: 0.3;
+    }
+  }
+
+  @keyframes glow {
+    0%, 100% {
+      opacity: 0.8;
+      filter: brightness(1);
+    }
+    50% {
+      opacity: 1;
+      filter: brightness(1.2);
+    }
+  }
+
+  @keyframes shimmer {
+    0% {
+      background-position: -1000px 0;
+    }
+    100% {
+      background-position: 1000px 0;
+    }
+  }
+
+  @keyframes slideInRight {
+    from {
+      transform: translateX(100%);
+      opacity: 0;
+    }
+    to {
+      transform: translateX(0);
+      opacity: 1;
+    }
+  }
+
+  @keyframes slideOutLeft {
+    from {
+      transform: translateX(0);
+      opacity: 1;
+    }
+    to {
+      transform: translateX(-100%);
+      opacity: 0;
+    }
+  }
+
+  @keyframes slideInLeft {
+    from {
+      transform: translateX(-100%);
+      opacity: 0;
+    }
+    to {
+      transform: translateX(0);
+      opacity: 1;
+    }
+  }
+
+  @keyframes slideOutRight {
+    from {
+      transform: translateX(0);
+      opacity: 1;
+    }
+    to {
+      transform: translateX(100%);
+      opacity: 0;
+    }
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  @keyframes spin-slow {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  .animate-float {
+    animation: float linear infinite;
+  }
+
+  .animate-glow {
+    animation: glow 2s ease-in-out infinite;
+  }
+
+  .animate-shimmer {
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(139, 92, 246, 0.1),
+      transparent
+    );
+    background-size: 1000px 100%;
+    animation: shimmer 2s infinite linear;
+  }
+
+  .animate-spin-slow {
+    animation: spin-slow 3s linear infinite;
+  }
+}
+
+/* Component Styles */
+@layer components {
+  /* Responsive container */
+  .responsive-container {
+    @apply w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px -8;
+  }
+
+  /* Card styles */
+  .card {
+    @apply bg-white rounded-lg shadow-md overflow-hidden;
+  }
+
+  /* Form styles */
+  .form-input {
+    @apply w-full px-4 py-2 text-gray-900 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500;
+  }
+
+  /* Button styles */
+  .btn {
+    @apply inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-purple-600 hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500;
+  }
+
+  /* Table styles */
+  .table-responsive {
+    @apply overflow-x-auto -mx-4 sm:mx-0;
+  }
+
+  .table-wrapper {
+    @apply min-w-full divide-y divide-gray-200;
+  }
+
+  /* Mobile menu */
+  .mobile-menu {
+    @apply fixed inset-0 z-50 transform transition-transform duration-300 ease-in-out;
+  }
+
+  /* Grid layouts */
+  .grid-responsive {
+    @apply grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6;
+  }
+
+  /* Stats card */
+  .stats-card {
+    @apply bg-white p-6 rounded-lg shadow-md;
+  }
+
+  /* Tournament card */
+  .tournament-card {
+    @apply relative overflow-hidden rounded-lg bg-purple-900/20 backdrop-blur-sm;
+  }
+
+  /* Match card */
+  .match-card {
+    @apply bg-white p-6 rounded-lg shadow-md space-y-4;
+  }
+
+  /* Leaderboard row */
+  .leaderboard-row {
+    @apply flex flex-col sm:flex-row items-start sm:items-center justify-between p-4 bg-white rounded-lg shadow-md;
+  }
+
+  /* Registration form */
+  .registration-form {
+    @apply space-y-6 bg-white p-6 rounded-lg shadow-md;
+  }
+
+  /* Results table */
+  .results-table {
+    @apply min-w-full divide-y divide-gray-200 bg-white rounded-lg shadow-md overflow-hidden;
+  }
+
+  /* Navigation */
+  .nav-link {
+    @apply flex items-center px-4 py-2 text-sm font-medium rounded-md transition-colors;
+  }
+
+  /* Search bar */
+  .search-bar {
+    @apply relative flex-1 max-w-lg;
+  }
+
+  /* Filters */
+  .filter-group {
+    @apply flex flex-wrap gap-2 my-4;
+  }
+
+  /* Pagination */
+  .pagination {
+    @apply flex justify-center space-x-2 mt-6;
+  }
+
+  /* Loading states */
+  .loading-spinner {
+    @apply animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-purple-500;
+  }
+
+  /* Empty states */
+  .empty-state {
+    @apply text-center py-12 bg-gray-50 rounded-lg;
+  }
+
+  /* Error states */
+  .error-state {
+    @apply text-center py-12 bg-red-50 rounded-lg text-red-600;
+  }
+
+  /* Success states */
+  .success-state {
+    @apply text-center py-12 bg-green-50 rounded-lg text-green-600;
+  }
+
+  /* Tooltips */
+  .tooltip {
+    @apply absolute z-10 px-2 py-1 text-xs text-white bg-gray-900 rounded pointer-events-none opacity-0 transition-opacity;
+  }
+
+  /* Badges */
+  .badge {
+    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium;
+  }
+
+  /* Icons */
+  .icon {
+    @apply flex-shrink-0 h-5 w-5;
+  }
+
+  /* Modals */
+  .modal {
+    @apply fixed inset-0 z-50 overflow-y-auto;
+  }
+
+  .modal-content {
+    @apply relative bg-white rounded-lg shadow-xl max-w-lg mx-auto my-8 p-6;
+  }
+
+  /* Alerts */
+  .alert {
+    @apply rounded-md p-4 mb-4;
+  }
+
+  /* Tabs */
+  .tabs {
+    @apply flex flex-wrap gap-2 border-b border-gray-200;
+  }
+
+  .tab {
+    @apply px-4 py-2 text-sm font-medium rounded-t-lg;
+  }
+
+  /* Breadcrumbs */
+  .breadcrumbs {
+    @apply flex items-center space-x-2 text-sm text-gray-500;
+  }
+
+  /* Progress bars */
+  .progress-bar {
+    @apply h-2 bg-gray-200 rounded-full overflow-hidden;
+  }
+
+  /* Avatar */
+  .avatar {
+    @apply rounded-full overflow-hidden flex-shrink-0;
+  }
+
+  /* Dropdown */
+  .dropdown {
+    @apply absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5;
+  }
+
+  /* Sidebar */
+  .sidebar {
+    @apply fixed inset-y-0 left-0 z-40 w-64 bg-white shadow-lg transform transition-transform duration-300 ease-in-out;
+  }
+
+  /* Header */
+  .header {
+    @apply bg-white shadow-sm sticky top-0 z-30;
+  }
+
+  /* Footer */
+  .footer {
+    @apply bg-gray-900 text-white py-12;
+  }
+}
