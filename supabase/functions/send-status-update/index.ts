@@ -7,7 +7,7 @@ const resend = new Resend(Deno.env.get("RESEND_API_KEY"));
 const ALLOWED_ORIGINS = [
   "http://localhost:5175", // Your current dev origin
   "http://localhost:5173", // Common Vite default port
-  "https://martiansgg.netlify.app/", // Add your production domain later
+  "https://martiansgg.netlify.app", // Add your production domain later
 ];
 
 serve(async (req: Request) => {
