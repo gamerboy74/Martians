@@ -13,7 +13,7 @@ import Teams from "./pages/Teams";
 import Leaderboard from "./pages/Leaderboard";
 import Settings from "./pages/Settings";
 import FeaturedGames from "./pages/FeaturedGames";
-import AllMatches from "./pages/pastTournamentsCard";
+import AllMatches from "./components/pastTournamentsCard";
 import TournamentView from "./components/eyedetails";
 import TournamentResults from "./components/TournamentResults";
 import Schedule from "./components/viewScheduleCard";
@@ -26,7 +26,7 @@ import MatchesSection from "./components/MatchesSection";
 import LeaderboardSection from "./components/Leaderboard";
 import Footer from "./components/Footer";
 import BGMIRegistration from "./components/Registeration/BGMIRegistration"; // Updated import path
-import PastMatches from "./pages/PastMatches";
+import PastMatches from "./components/PastMatches";
 import { useSettingsStore } from "./stores/settingsStore";
 
 function MaintenanceMode() {

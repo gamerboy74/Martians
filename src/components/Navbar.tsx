@@ -1,13 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {
-  Crown,
-  Menu,
-  X,
-  Github,
-  Twitter,
-  MessageSquare,
-  Youtube,
-} from "lucide-react";
+import { Crown, Menu, X, Github, Twitter, MessageSquare, Youtube } from "lucide-react";
 import { FaDiscord, FaWhatsapp } from "react-icons/fa";
 import { useLocation, useNavigate } from "react-router-dom";
 
@@ -61,29 +53,32 @@ const Navbar: React.FC = () => {
 
   return (
     <>
-      <nav className="fixed top-0 left-0 w-full z-50 bg-black/90 backdrop-blur-md shadow-md">
+      <nav className="fixed top-0 left-0 w-full z-50 bg-black/95 backdrop-blur-lg shadow-lg shadow-purple-500/10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-          <div className="flex items-center justify-between h-20"> {/* Increased height from h-16 to h-20 */}
+          <div className="flex items-center justify-between h-20">
             {/* Logo Section */}
-            <div className="flex-shrink-0">
-              <a href="./" className="flex items-center">
+            <div className="flex-shrink-0 flex items-center">
+              <a href="./" className="flex items-center gap-2 group">
                 <img
                   src="https://media.discordapp.net/attachments/1334811878714769408/1339557614031212575/MGG-Icon-Dark_2.png?ex=67bef9be&is=67bda83e&hm=9efd76127b5593c7f857e8e61be3228308e6f4141ddd69c8a70ed5b8ee3776f7&=&format=webp&quality=lossless&width=909&height=909"
-                  className="h-16 w-auto object-contain transition-all duration-300 hover:brightness-125" // Increased from h-12 to h-16
+                  className="h-12 sm:h-16 w-auto object-contain transition-all duration-300 group-hover:brightness-125 group-hover:scale-105"
                   alt="Martians Gaming Guild Logo"
-                /> Martians Gaming Guild
+                />
+                <span className="text-white font-bold text-lg sm:text-xl tracking-wide hidden sm:block group-hover:text-purple-400 transition-colors">
+                  Martians Gaming Guild
+                </span>
               </a>
             </div>
 
             {/* Desktop Navigation */}
-            <div className="hidden md:flex items-center gap-12 ml-12"> {/* Increased gap-10 to gap-12, ml-10 to ml-12 */}
+            <div className="hidden md:flex items-center gap-8 lg:gap-12 ml-8 lg:ml-12">
               {navItems.map((item) => (
                 <button
                   key={item.id}
                   onClick={() => handleNavClick(item.href)}
-                  className={`text-sm font-medium tracking-wide transition-colors ${
+                  className={`text-sm lg:text-base font-semibold tracking-wider transition-all duration-300 relative ${
                     activeSection === item.id
-                      ? "text-purple-400"
+                      ? "text-purple-400 after:absolute after:bottom-[-4px] after:left-0 after:w-full after:h-0.5 after:bg-purple-400 after:animate-underline"
                       : "text-gray-200 hover:text-purple-400"
                   }`}
                 >
@@ -93,47 +88,47 @@ const Navbar: React.FC = () => {
             </div>
 
             {/* Social Icons (Desktop) */}
-            <div className="hidden md:flex items-center gap-6">
+            <div className="hidden md:flex items-center gap-4 lg:gap-6">
               <a
                 href="https://www.youtube.com/@Martiansgaminguild"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-gray-200 hover:text-purple-400 transition-colors"
+                className="text-gray-200 hover:text-purple-400 transition-all duration-300 hover:scale-110"
               >
-                <Youtube size={24} /> {/* Increased size from 22 to 24 */}
+                <Youtube size={20} className="w-5 h-5 sm:w-6 sm:h-6" />
               </a>
               <a
                 href="https://x.com/MartiansGGC"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-gray-200 hover:text-purple-400 transition-colors"
+                className="text-gray-200 hover:text-purple-400 transition-all duration-300 hover:scale-110"
               >
-                <Twitter size={24} />
+                <Twitter size={20} className="w-5 h-5 sm:w-6 sm:h-6" />
               </a>
               <a
                 href="https://discord.gg/CAUzxzfXMx"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-gray-200 hover:text-purple-400 transition-colors"
+                className="text-gray-200 hover:text-purple-400 transition-all duration-300 hover:scale-110"
               >
-                <FaDiscord size={24} />
+                <FaDiscord size={20} className="w-5 h-5 sm:w-6 sm:h-6" />
               </a>
               <a
                 href="https://chat.whatsapp.com/FR4YzZMFQorHKgqHcduHFs"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-gray-200 hover:text-purple-400 transition-colors"
+                className="text-gray-200 hover:text-purple-400 transition-all duration-300 hover:scale-110"
               >
-                <FaWhatsapp size={24} />
+                <FaWhatsapp size={20} className="w-5 h-5 sm:w-6 sm:h-6" />
               </a>
             </div>
 
             {/* Mobile Menu Button */}
             <button
               onClick={() => setIsMenuOpen(true)}
-              className="md:hidden text-gray-200 hover:text-purple-400 transition-colors"
+              className="md:hidden text-gray-200 hover:text-purple-400 transition-all duration-300 hover:scale-110"
             >
-              <Menu size={30} /> {/* Increased size from 28 to 30 */}
+              <Menu size={24} className="w-6 h-6 sm:w-7 sm:h-7" />
             </button>
           </div>
         </div>
@@ -141,30 +136,28 @@ const Navbar: React.FC = () => {
 
       {/* Mobile Menu */}
       <div
-        className={`fixed inset-0 bg-black/95 backdrop-blur-sm z-50 transition-opacity duration-300 ${
-          isMenuOpen
-            ? "opacity-100 pointer-events-auto"
-            : "opacity-0 pointer-events-none"
+        className={`fixed inset-0 bg-gradient-to-b from-black via-purple-900/90 to-black z-50 transition-all duration-300 transform ${
+          isMenuOpen ? "translate-x-0 opacity-100 pointer-events-auto" : "translate-x-full opacity-0 pointer-events-none"
         }`}
       >
         <div className="h-full flex flex-col p-6">
           <button
             onClick={() => setIsMenuOpen(false)}
-            className="text-gray-200 hover:text-purple-400 transition-colors self-end"
+            className="text-gray-200 hover:text-purple-400 transition-all duration-300 hover:scale-110 self-end"
           >
-            <X size={30} /> {/* Increased size from 28 to 30 */}
+            <X size={24} className="w-6 h-6 sm:w-7 sm:h-7" />
           </button>
 
-          <div className="flex-1 flex flex-col items-center justify-center gap-8">
-            <Crown size={64} className="text-purple-400 mb-6" />
-            <div className="space-y-6 text-center">
+          <div className="flex-1 flex flex-col items-center justify-center gap-8 sm:gap-10">
+            <Crown size={40} className="sm:size-48 text-purple-400 mb-4 sm:mb-6 animate-pulse" />
+            <div className="space-y-6 sm:space-y-8 text-center">
               {navItems.map((item) => (
                 <button
                   key={item.id}
                   onClick={() => handleNavClick(item.href)}
-                  className={`block text-lg font-medium tracking-wide transition-colors ${
+                  className={`block text-lg sm:text-xl font-semibold tracking-wider transition-all duration-300 ${
                     activeSection === item.id
-                      ? "text-purple-400"
+                      ? "text-purple-400 relative after:absolute after:bottom-[-4px] after:left-0 after:w-full after:h-0.5 after:bg-purple-400 after:animate-underline"
                       : "text-gray-200 hover:text-purple-400"
                   }`}
                 >
@@ -174,42 +167,54 @@ const Navbar: React.FC = () => {
             </div>
           </div>
 
-          <div className="flex justify-center gap-8 pb-6">
+          <div className="flex justify-center gap-6 sm:gap-8 pb-6">
             <a
               href="https://www.youtube.com/@Martiansgaminguild"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-gray-200 hover:text-purple-400 transition-colors"
+              className="text-gray-200 hover:text-purple-400 transition-all duration-300 hover:scale-110"
             >
-              <Youtube size={24} />
+              <Youtube size={20} className="w-5 h-5 sm:w-6 sm:h-6" />
             </a>
             <a
               href="https://x.com/MartiansGGC"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-gray-200 hover:text-purple-400 transition-colors"
+              className="text-gray-200 hover:text-purple-400 transition-all duration-300 hover:scale-110"
             >
-              <Twitter size={24} />
+              <Twitter size={20} className="w-5 h-5 sm:w-6 sm:h-6" />
             </a>
             <a
               href="https://chat.whatsapp.com/FR4YzZMFQorHKgqHcduHFs"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-gray-200 hover:text-purple-400 transition-colors"
+              className="text-gray-200 hover:text-purple-400 transition-all duration-300 hover:scale-110"
             >
-              <FaWhatsapp size={24} />
+              <FaWhatsapp size={20} className="w-5 h-5 sm:w-6 sm:h-6" />
             </a>
             <a
               href="https://discord.gg/CAUzxzfXMx"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-gray-200 hover:text-purple-400 transition-colors"
+              className="text-gray-200 hover:text-purple-400 transition-all duration-300 hover:scale-110"
             >
-              <FaDiscord size={24} />
+              <FaDiscord size={20} className="w-5 h-5 sm:w-6 sm:h-6" />
             </a>
           </div>
         </div>
       </div>
+
+      <style>
+        {`
+          @keyframes underline {
+            from { width: 0; }
+            to { width: 100%; }
+          }
+          .animate-underline {
+            animation: underline 0.3s ease-out forwards;
+          }
+        `}
+      </style>
     </>
   );
 };

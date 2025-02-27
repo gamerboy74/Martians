@@ -4,6 +4,12 @@ export default {
   darkMode: 'class',
   theme: {
     extend: {
+      backdropBlur: {
+        md: "8px",
+      },
+      opacity: {
+        95: "0.95",
+      },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",

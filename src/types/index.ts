@@ -17,12 +17,14 @@ export interface Tournament {
   end_date: string;
   registration_deadline: string;
   prize_pool: string;
+  registration_fee: number;
   max_participants: number;
   current_participants: number;
   format: 'solo' | 'duo' | 'squad' | 'team';
   status: 'upcoming' | 'ongoing' | 'completed';
   registration_open: boolean;
   image_url: string;
+  qr_code_url?: string;
   created_at: string;
   updated_at: string;
 }

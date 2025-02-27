@@ -14,8 +14,8 @@
     "supabase:seed": "supabase db reset --seed-file supabase/seeds/seed.sql"
   },
   "dependencies": {
-    "@hookform/resolvers": "^3.3.4",
-    "@supabase/supabase-js": "^2.39.7",
+    "@hookform/resolvers": "^3.10.0",
+    "@supabase/supabase-js": "^2.49.1",
     "@tanstack/react-query": "^5.66.9",
     "clsx": "^2.1.0",
     "date-fns": "^3.3.1",
@@ -24,7 +24,7 @@
     "lucide-react": "^0.344.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "react-hook-form": "^7.51.0",
+    "react-hook-form": "^7.54.2",
     "react-icons": "^5.5.0",
     "react-router-dom": "^6.22.3",
     "recharts": "^2.12.2",
@@ -32,7 +32,7 @@
     "swiper": "^11.2.4",
     "tailwind-merge": "^2.2.1",
     "uuid": "^11.1.0",
-    "zod": "^3.22.4",
+    "zod": "^3.24.2",
     "zustand": "^4.5.2"
   },
   "devDependencies": {
