@@ -60,7 +60,7 @@ const Navbar: React.FC = () => {
             <div className="flex-shrink-0 flex items-center">
               <a href="./" className="flex items-center gap-2 group">
                 <img
-                  src="https://media.discordapp.net/attachments/1334811878714769408/1339557614031212575/MGG-Icon-Dark_2.png?ex=67bef9be&is=67bda83e&hm=9efd76127b5593c7f857e8e61be3228308e6f4141ddd69c8a70ed5b8ee3776f7&=&format=webp&quality=lossless&width=909&height=909"
+                  src="https://gvmsopxbjhntcublylxu.supabase.co/storage/v1/object/public/Logo_mgg//MGG-Icon-Dark_2.webp"
                   className="h-12 sm:h-16 w-auto object-contain transition-all duration-300 group-hover:brightness-125 group-hover:scale-105"
                   alt="Martians Gaming Guild Logo"
                 />
