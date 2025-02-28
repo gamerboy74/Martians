@@ -72,7 +72,7 @@ serve(async (req) => {
             .container {
               max-width: 600px;
               margin: 20px auto;
-              background-color: #FFF2F2;
+              background-color: #e9ecef;
               border-radius: 10px;
               box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
               overflow: hidden;

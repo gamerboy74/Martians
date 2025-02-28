@@ -158,30 +158,27 @@ const Registrations: React.FC = () => {
     tournamentId: string,
     status: "approved" | "rejected"
   ) => {
-    try {
-      const response = await fetch(
-        "https://gvmsopxbjhntcublylxu.supabase.co/functions/v1/send-status-update",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`,
-          },
-          body: JSON.stringify({
-            email,
-            fullName,
-            teamName,
-            tournamentId,
-            status,
-          }),
-        }
-      );
-
-      if (!response.ok) throw new Error("Failed to send email");
-    } catch (error) {
+    // Fire-and-forget email sending
+    fetch(
+      "https://gvmsopxbjhntcublylxu.supabase.co/functions/v1/send-status-update",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`,
+        },
+        body: JSON.stringify({
+          email,
+          fullName,
+          teamName,
+          tournamentId,
+          status,
+        }),
+      }
+    ).catch((error) => {
       console.error("Error sending status update email:", error);
-      toastError("Failed to send status update email");
-    }
+      toastError("Failed to send status update email"); // This won't block the UI
+    });
   };
 
   const updateStatus = async (id: string, status: "approved" | "rejected") => {
@@ -215,7 +212,8 @@ const Registrations: React.FC = () => {
       if (updateError) throw updateError;
 
       toastSuccess(`Registration ${status} successfully`);
-      await sendStatusUpdateEmail(
+      // Send email in the background without awaiting
+      sendStatusUpdateEmail(
         contact_info.email,
         contact_info.full_name,
         team_name,

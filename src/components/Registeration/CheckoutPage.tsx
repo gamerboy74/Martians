@@ -2,6 +2,7 @@ import React, { useState, useCallback, useMemo, useEffect } from "react";
 import { CreditCard, CheckCircle, Upload } from "lucide-react";
 import { supabase } from "../../lib/supabase";
 import { v4 as uuidv4 } from "uuid";
+import debounce from "lodash/debounce"; // Install lodash if not already present
 
 interface CheckoutPageProps {
   fee: number;
@@ -43,10 +44,9 @@ const CheckoutPage: React.FC<CheckoutPageProps> = React.memo(
       isSubmitted: false,
       uuid: null,
     });
-    const [tournamentTitle, setTournamentTitle] = useState<string | null>(null); // State for tournament title
-    const [isLoadingTitle, setIsLoadingTitle] = useState(true); // Loading state for title fetch
+    const [tournamentTitle, setTournamentTitle] = useState<string | null>(null);
+    const [isLoadingTitle, setIsLoadingTitle] = useState(true);
 
-    // Fetch tournament title from Supabase
     useEffect(() => {
       const fetchTournamentTitle = async () => {
         setIsLoadingTitle(true);
@@ -61,10 +61,9 @@ const CheckoutPage: React.FC<CheckoutPageProps> = React.memo(
           if (!data) throw new Error("Tournament not found");
 
           setTournamentTitle(data.title);
-          console.log("Tournament title fetched:", data.title);
         } catch (error) {
           console.error("Error fetching tournament title:", error);
-          setTournamentTitle("Unknown Tournament"); // Fallback title
+          setTournamentTitle("Unknown Tournament");
         } finally {
           setIsLoadingTitle(false);
         }
@@ -77,7 +76,6 @@ const CheckoutPage: React.FC<CheckoutPageProps> = React.memo(
       async (file: File, fileName: string) => {
         setUploadState((prev) => ({ ...prev, isUploading: true, error: null }));
         try {
-          console.log("Uploading file with name:", fileName);
           const { error } = await supabase.storage
             .from("payment-screenshots")
             .upload(fileName, file, {
@@ -117,7 +115,6 @@ const CheckoutPage: React.FC<CheckoutPageProps> = React.memo(
     const handleImageChange = useCallback(
       async (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
-        console.log("Image selected, file:", file);
         if (file) {
           const uuid = uuidv4();
           const fileName = `${tournamentId}/${uuid}_${file.name}`;
@@ -145,18 +142,7 @@ const CheckoutPage: React.FC<CheckoutPageProps> = React.memo(
 
     const handleSubmit = useCallback(async () => {
       const { file, isUploading, uploadComplete, isSubmitted, uuid } = uploadState;
-      console.log("Attempting submit, state:", {
-        txId,
-        file,
-        isUploading,
-        uploadComplete,
-        isSubmitted,
-        isSubmitting,
-      });
-      if (isSubmitted) {
-        console.log("Submission already in progress, ignoring click");
-        return;
-      }
+      if (isSubmitted) return;
 
       if (!txId || !file || isUploading) {
         setUploadState((prev) => ({
@@ -169,18 +155,11 @@ const CheckoutPage: React.FC<CheckoutPageProps> = React.memo(
         return;
       }
 
-      if (!uploadComplete || !uuid) {
-        console.log("Upload or UUID not complete; re-checking...");
-        return;
-      }
+      if (!uploadComplete || !uuid) return;
 
       setUploadState((prev) => ({ ...prev, isSubmitted: true, error: null }));
       try {
         const fileName = file.name;
-        console.log(
-          "Submitting with txId and uploaded path:",
-          `${tournamentId}/${uuid}_${fileName}`
-        );
         await onConfirm(txId, `${tournamentId}/${uuid}_${fileName}`);
       } catch (error) {
         setUploadState((prev) => ({
@@ -192,21 +171,30 @@ const CheckoutPage: React.FC<CheckoutPageProps> = React.memo(
       }
     }, [txId, uploadState, onConfirm, isSubmitting, tournamentId]);
 
+    // Debounced txId setter
+    const debouncedSetTxId = useMemo(
+      () => debounce((value: string) => setTxId(value), 300),
+      []
+    );
+
+    const handleTxIdChange = useCallback(
+      (e: React.ChangeEvent<HTMLInputElement>) => {
+        debouncedSetTxId(e.target.value);
+      },
+      [debouncedSetTxId]
+    );
+
     const canSubmit = useMemo(() => {
-      const result =
+      const { file, isUploading, uploadComplete, isSubmitted, uuid } = uploadState;
+      return (
         !!txId &&
-        !!uploadState.file &&
-        !uploadState.isUploading &&
+        !!file &&
+        !isUploading &&
         !isSubmitting &&
-        uploadState.uploadComplete &&
-        !uploadState.isSubmitted &&
-        !!uploadState.uuid;
-      console.log("canSubmit value:", result, "with state:", {
-        txId,
-        uploadState,
-        isSubmitting,
-      });
-      return result;
+        uploadComplete &&
+        !isSubmitted &&
+        !!uuid
+      );
     }, [
       txId,
       uploadState.file,
@@ -217,7 +205,15 @@ const CheckoutPage: React.FC<CheckoutPageProps> = React.memo(
       isSubmitting,
     ]);
 
-    // Show a loading state while fetching the title
+    // Optional: Log canSubmit changes only when needed
+    useEffect(() => {
+      console.log("canSubmit changed:", canSubmit, "with state:", {
+        txId,
+        uploadState,
+        isSubmitting,
+      });
+    }, [canSubmit, txId, uploadState, isSubmitting]);
+
     if (isLoadingTitle) {
       return (
         <div className="flex justify-center py-12">
@@ -271,8 +267,7 @@ const CheckoutPage: React.FC<CheckoutPageProps> = React.memo(
                 <label className="text-sm text-gray-400">Transaction ID</label>
                 <input
                   type="text"
-                  value={txId}
-                  onChange={(e) => setTxId(e.target.value)}
+                  onChange={handleTxIdChange}
                   placeholder="Enter UPI Transaction ID"
                   disabled={uploadState.isUploading || uploadState.isSubmitted}
                   className="w-full p-3 bg-black/50 border border-purple-500/30 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-purple-500"

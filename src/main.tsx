@@ -18,9 +18,9 @@ function Root() {
   }, []);
 
   return (
-    <StrictMode>
+
       <App />
-    </StrictMode>
+
   );
 }
 

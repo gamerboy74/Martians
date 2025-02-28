@@ -4,12 +4,20 @@ import { registrationService } from "../services/registrationService";
 import { useApp } from "../context/AppContext";
 import type { RegistrationFormData } from "../types/registration";
 
+interface RegistrationResult {
+  registrationId: string;
+  uploadToken: string;
+}
+
 export function useRegistration() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { addNotification } = useApp();
   const navigate = useNavigate();
 
-  const submitRegistration = async (data: RegistrationFormData, tournamentId: string) => {
+  const submitRegistration = async (
+    data: RegistrationFormData,
+    tournamentId: string
+  ): Promise<RegistrationResult | null> => {
     if (isSubmitting) return null;
     setIsSubmitting(true);
 
