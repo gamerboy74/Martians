@@ -149,7 +149,11 @@ const Navbar: React.FC = () => {
           </button>
 
           <div className="flex-1 flex flex-col items-center justify-center gap-8 sm:gap-10">
-            <Crown size={40} className="sm:size-48 text-purple-400 mb-4 sm:mb-6 animate-pulse" />
+          <img
+                  src="https://gvmsopxbjhntcublylxu.supabase.co/storage/v1/object/public/Logo_mgg//MGG-Icon-Dark_2.webp"
+                  className="h-12 sm:h-16 w-auto object-contain transition-all duration-300 group-hover:brightness-125 group-hover:scale-105"
+                  alt="Martians Gaming Guild Logo"
+                />
             <div className="space-y-6 sm:space-y-8 text-center">
               {navItems.map((item) => (
                 <button
